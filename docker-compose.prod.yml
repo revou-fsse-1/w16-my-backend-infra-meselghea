@@ -13,10 +13,12 @@ services:
       - .env
     restart: always
   app:
-    image: meselghea/my-backend-infra
+    image: asia-southeast2-docker.pkg.dev/durable-tangent-387511/docker/my-backend-infra
     container_name: meselghea-backend-infra-app
     build: .
     ports:
+      - 80:4000
+      - 443:4000
       - 4000:4000
     env_file:
       - .env
