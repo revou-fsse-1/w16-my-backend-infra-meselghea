@@ -1,0 +1,38 @@
+import { Controller, Get, Post, Body, Patch, Param, Delete,  UseGuards, ParseIntPipe, NotFoundException } from '@nestjs/common';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDeco } from './users.decorator';
+import { User } from '@prisma/client';
+import { UsersService } from './users.service';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UserEntity } from './users.entity';
+import { UpdateProductDto } from 'src/products/dto/update-product.dto';
+
+@Controller('users')
+@ApiTags('users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService ) {}
+
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: UserEntity })
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+   return new UserEntity(await this.usersService.findOne(id));
+  }
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: UserEntity })
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
+  return this.usersService.update(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: UserEntity })
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.remove(id);
+  }
+}

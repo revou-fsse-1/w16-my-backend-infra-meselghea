@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  database:
+    image: postgres:alpine
+    container_name: mesel-backend-infra-database
+    hostname: database
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    restart: always
+  app:
+    image: meselghea/my-backend-infra
+    container_name: meselghea-backend-infra-app
+    build: .
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+    env_file:
+      - .env
+    restart: always
+
+volumes:
+  postgres:
