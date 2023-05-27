@@ -1,12 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete,  UseGuards, ParseIntPipe, NotFoundException } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserDeco } from './users.decorator';
-import { User } from '@prisma/client';
 import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserEntity } from './users.entity';
-import { UpdateProductDto } from 'src/products/dto/update-product.dto';
 
 @Controller('users')
 @ApiTags('users')

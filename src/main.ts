@@ -7,16 +7,6 @@ import * as passport from 'passport';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(
-    session({
-    secret: 'keyboard',
-    resave: false,
-    saveUninitialized: false,
-    }),
-  );
-  app.use (passport.initialize());
-  app.use(passport.session());
-
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.useGlobalPipes(new ValidationPipe({whitelist: true}));
   
@@ -26,10 +16,6 @@ async function bootstrap() {
     .setVersion('0.1')
     .addBearerAuth()
     //.addSecurityRequirements('bearer')
-    .addSecurity('bearer', {
-      type: 'http',
-      scheme: 'bearer',
-    })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
